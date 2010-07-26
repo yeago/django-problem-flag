@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block body %}
 <h2>Problem flagging {{ object }}</h2> 
-<form action="." method="post">
+<form action="." method="post">{% csrf_token %}
 	{{ form.as_p }}
 	<p><input type="submit" name="Submit" value="Save" />
 {% endblock %}

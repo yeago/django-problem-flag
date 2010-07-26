@@ -39,8 +39,13 @@ def flag(request,content_type,object_pk,login_required=True):
 		problem.save()
 
 	request.user.message_set.create(message="Problem flag added")
+
+	recipients = getattr(settings,'PROBLEM_MANAGERS',None) or settings.MANAGERS
+	recipients = [i[1] for i in recipients]
+
 	send_mail("%s flagged with problem by %s" % (content_object,request.user),\
-			"%s" % (content_object.get_absolute_url()),settings.DEFAULT_FROM_EMAIL,getattr(settings,'PROBLEM_MANAGERS',settings.MANAGERS))
+			"%s" % (content_object.get_absolute_url()),settings.DEFAULT_FROM_EMAIL,recipients)
+	
 	return redirect(request.GET.get('return_url',content_object.get_absolute_url()))
 
 def delete(request,content_type,object_pk,perm_required='delete_problem',login_required=True):
@@ -93,9 +98,14 @@ def form(request,content_type,object_pk,form_class=pforms.ProblemFlagNotesForm,l
 		if form.is_valid():
 			flag = form.save()
 			request.user.message_set.create(message="Problem flag added")
+
+			recipients = getattr(settings,'PROBLEM_MANAGERS',None) or settings.MANAGERS
+			recipients = [i[1] for i in recipients]
+			
 			send_mail("%s flagged with problem by %s" % (content_object,request.user),\
 					"Item url  -- http://tappedout.net%s\r\n\r\nNotes -- %s"\
-					% (content_object.get_absolute_url(),flag.notes),settings.DEFAULT_FROM_EMAIL,getattr(settings,'PROBLEM_MANAGERS',settings.MANAGERS))
+					% (content_object.get_absolute_url(),flag.notes),settings.DEFAULT_FROM_EMAIL,recipients)
+			
 			return redirect(content_object.get_absolute_url())
 
 	return render_to_response('problem/form.html', {'form': form, 'object': content_object }, context_instance=RequestContext(request))
