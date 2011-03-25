@@ -2,7 +2,7 @@ from django import forms
 
 from django.contrib.contenttypes.models import ContentType
 
-from misc.problem.models import ProblemFlag
+from problem.models import ProblemFlag
 
 class ProblemFlagNotesForm(forms.ModelForm):
 	def __init__(self,content_object,*args,**kwargs):

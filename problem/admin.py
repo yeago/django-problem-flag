@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from misc.problem import models as pmodels
+from problem import models as pmodels
 
 def resolve(modeladmin,request,queryset):
 	queryset.update(resolved=True)

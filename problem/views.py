@@ -7,8 +7,8 @@ from django.views.generic.list_detail import object_list
 from django.contrib.contenttypes.models import ContentType
 from django.core.mail import send_mail
 
-from misc.problem import forms as pforms
-from misc.problem import models as pmodels
+from problem import forms as pforms
+from problem import models as pmodels
 
 def list(request,include_resolved=False,content_type=None,object_pk=None,perm_required='problem',login_required=True):
 	if (login_required and not request.user.is_authenticated()) or \
